@@ -1,5 +1,5 @@
 // 보통 자물쇠 1번 아이템 획득 정보
-const normalLock1: Item[] = [
+export const normalLock1: Item[] = [
   {
     name: "스페셜 클론 레어 아바타 풀세트 상자",
     quantity: 1,
@@ -46,7 +46,7 @@ const normalLock1: Item[] = [
 ];
 
 // 보통 자물쇠 2번 아이템 획득 정보
-const normalLock2: Item[] = [
+export const normalLock2: Item[] = [
   {
     name: "스페셜 클론 레어 아바타 풀세트 상자",
     quantity: 1,
@@ -93,7 +93,7 @@ const normalLock2: Item[] = [
 ];
 
 // 마일리지 자물쇠 1번 아이템 획득 정보
-const mileageLock1: Item[] = [
+export const mileageLock1: Item[] = [
   {
     name: "스페셜 클론 레어 아바타 풀세트 상자",
     quantity: 1,
@@ -140,7 +140,7 @@ const mileageLock1: Item[] = [
 ];
 
 // 마일리지 자물쇠 2번 아이템 획득 정보
-const mileageLock2: Item[] = [
+export const mileageLock2: Item[] = [
   {
     name: "스페셜 클론 레어 아바타 풀세트 상자",
     quantity: 1,

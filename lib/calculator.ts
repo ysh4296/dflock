@@ -4,7 +4,7 @@
  * @param k 사건 발생 횟수
  * @returns 푸아송 분포 확률
  */
-function poissonProbability(lambda: number, k: number) {
+export function poissonProbability(lambda: number, k: number) {
   return (lambda ** k * Math.exp(-lambda)) / factorial(k);
 }
 
@@ -24,7 +24,7 @@ function factorial(n: number) {
  * @param trials 시뮬레이션 횟수
  * @returns 시뮬레이션 결과
  */
-function monteCarloSimulation(lambda: number, trials: number) {
+export function monteCarloSimulation(lambda: number, trials: number) {
   const results = new Array(trials).fill(0);
 
   for (let i = 0; i < trials; i++) {
