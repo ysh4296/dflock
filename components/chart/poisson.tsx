@@ -45,7 +45,7 @@ const Poisson = () => {
           자물쇠 1000개를 사용했을 때 이달의 아이템 획득 개수별 확률 분포입니다.
         </CardDescription>
       </CardHeader>
-      <ChartContainer className="w-100" config={chartConfig}>
+      <ChartContainer config={chartConfig}>
         <AreaChart
           accessibilityLayer
           data={chartData}
@@ -55,18 +55,9 @@ const Poisson = () => {
           }}
         >
           <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="num"
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
-            tickFormatter={(value) => value.slice(0, 3)}
-          />
+          <XAxis dataKey="num" tickFormatter={(value) => value.slice(0, 3)} />
           <XAxis
             dataKey="probability"
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
             tickFormatter={(value) => value.slice(0, 3)}
           />
           <ChartTooltip
