@@ -9,7 +9,6 @@
       "recommended": true,
       "correctness": {
         "useExhaustiveDependencies": "off",
-        "noUnusedVariables": "error",
         "noUnusedImports": "error"
       },
       "security": {

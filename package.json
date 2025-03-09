@@ -8,7 +8,7 @@
     "start": "next start",
     "format": "biome check --write .",
     "lint": "biome lint .",
-    "test": "lint-staged",
+    "test": "lint-staged && yarn build",
     "prepare": "husky"
   },
   "dependencies": {
@@ -38,5 +38,8 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.1"
+  },
+  "overrides": {
+    "react-is": "^19.0.0-rc-69d4b800-20241021"
   }
 }
