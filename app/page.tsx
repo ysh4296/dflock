@@ -7,7 +7,7 @@ import { Lock } from "lucide-react";
 
 export default function Home() {
   return (
-    <>
+    <div className="p-8 h-screen w-screen">
       <header className="mb-8">
         <div className="flex flex-row gap-2">
           <Lock className="h-8 w-8" />
@@ -49,6 +49,6 @@ export default function Home() {
         </Card>
       </main>
       <footer />
-    </>
+    </div>
   );
 }
