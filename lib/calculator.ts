@@ -29,7 +29,7 @@ export function monteCarloSimulation(
   lambdas: Item[],
   trials: number,
   locks: number,
-) {
+): SimulationTrial[] {
   const results: {
     trial: number;
     acquiredItems: { name: string; count: number }[];
@@ -63,7 +63,14 @@ export function calculateTotalGold(
     acquiredItems: { name: string; count: number }[];
   }[],
   goldData: Gold[],
-) {
+): {
+  totalGold: number;
+  trial: number;
+  acquiredItems: {
+    name: string;
+    count: number;
+  }[];
+}[] {
   return results.map((result) => {
     let totalGold = 0;
 

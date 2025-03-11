@@ -22,7 +22,7 @@ import { Checkbox } from "../ui/checkbox";
 
 const InputForm = () => {
   return (
-    <Card className="w-sm">
+    <Card className="h-fit">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Settings className="h-5 w-5" />

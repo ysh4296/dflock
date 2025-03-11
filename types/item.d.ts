@@ -5,3 +5,8 @@ type Item = {
 };
 
 type Gold = { name: string; quantity: number; gold: number };
+
+type SimulationTrial = {
+  trial: number;
+  acquiredItems: { name: string; count: number }[];
+};

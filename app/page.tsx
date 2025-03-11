@@ -27,7 +27,6 @@ export default function Home() {
       </header>
       <main className="flex flex-row gap-4">
         <SimulationSettingForm />
-
         <Card className="flex grow" style={{ width: "100vw" }}>
           <Tabs defaultValue="distribution" className="p-2">
             <TabsList className="grid w-full grid-cols-2">
