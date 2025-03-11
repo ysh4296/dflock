@@ -65,7 +65,7 @@ const ChartArea = () => {
   if (loading) return <Spinner size="medium" className="m-auto" />;
 
   return (
-    <ChartContainer config={chartConfig}>
+    <ChartContainer config={chartConfig} className="h-fit">
       <AreaChart data={chartData}>
         <XAxis
           dataKey="percentile"
