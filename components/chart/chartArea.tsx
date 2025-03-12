@@ -1,14 +1,6 @@
-// src/components/ChartArea.js
-
 "use client";
 
-import {
-  mileageLock1,
-  mileageLock2,
-  normalLock1,
-  normalLock2,
-} from "@/mock/itemData";
-import { useEffect, useState } from "react";
+import { useGoldChartStore } from "@/store/chart";
 import { Area, AreaChart, Tooltip, XAxis } from "recharts";
 import { type ChartConfig, ChartContainer } from "../ui/chart";
 import { Spinner } from "../ui/spinner";
@@ -21,46 +13,14 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const ChartArea = () => {
-  const [loading, setLoading] = useState(true);
-  const [chartData, setChartData] = useState([]);
-  const TRIES = 10000;
+  const { loading, chartData } = useGoldChartStore();
 
-  useEffect(() => {
-    // Web Worker 생성
-    const worker = new Worker(
-      new URL("@/worker/createWorker.ts", import.meta.url),
-      {
-        type: "module",
-      },
+  if (loading === undefined)
+    return (
+      <p className="leading-7 [&:not(:first-child)]:mt-6">
+        자물쇠의 종류와 개수를 설정하여 골드 획득량을 시뮬레이션 해보세요.
+      </p>
     );
-
-    // Worker에 데이터 전달
-    worker.postMessage({
-      normalLock1,
-      normalLock2,
-      mileageLock1,
-      mileageLock2,
-      TRIES,
-    });
-
-    // Worker로부터 데이터 받기
-    worker.onmessage = (event) => {
-      setChartData(event.data); // chartData 업데이트
-      setLoading(false); // 로딩 상태 업데이트
-      worker.terminate(); // 작업 완료 후 Worker 종료
-    };
-
-    // 에러 처리
-    worker.onerror = (error) => {
-      console.error("Worker Error:", error);
-      setLoading(false);
-      worker.terminate();
-    };
-
-    return () => {
-      worker.terminate(); // 컴포넌트 언마운트 시 Worker 종료
-    };
-  }, []);
 
   if (loading) return <Spinner size="medium" className="m-auto" />;
 

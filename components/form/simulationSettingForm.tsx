@@ -10,6 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGoldChartStore } from "@/store/chart";
+import { useInputStore } from "@/store/form";
 import { Calculator, Settings } from "lucide-react";
 import {
   Card,
@@ -18,15 +20,24 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Checkbox } from "../ui/checkbox";
 
 const InputForm = () => {
+  const {
+    lockType,
+    boosterType,
+    lockCount,
+    setLockType,
+    setBoosterType,
+    setLockCount,
+  } = useInputStore();
+
+  const { setChartData } = useGoldChartStore();
+
   return (
     <Card className="h-fit">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Settings className="h-5 w-5" />
-          설정
+          <Settings className="h-5 w-5" /> 설정
         </CardTitle>
         <CardDescription>
           자물쇠 타입, 개수 및 부스터 효과를 설정하세요
@@ -35,7 +46,7 @@ const InputForm = () => {
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="lockType">자물쇠 타입</Label>
-          <Select value={""} onValueChange={(value) => {}}>
+          <Select value={lockType} onValueChange={setLockType}>
             <SelectTrigger id="lockType">
               <SelectValue placeholder="자물쇠 타입 선택" />
             </SelectTrigger>
@@ -50,21 +61,17 @@ const InputForm = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="boosterType">부스터 효과 (1-10)</Label>
-          <Select value={""} onValueChange={(value) => {}}>
+          <Label htmlFor="boosterType">부스터 상자 주기 (7-9)</Label>
+          <Select value={boosterType} onValueChange={setBoosterType}>
             <SelectTrigger id="boosterType">
               <SelectValue placeholder="부스터 효과 선택" />
             </SelectTrigger>
             <SelectContent>
-              {/* {Object.keys(boosterEffects).map((level) => (
-                <SelectItem key={level} value={level}>
-                  {level} (x
-                  {boosterEffects[level as keyof typeof boosterEffects].toFixed(
-                    1
-                  )}
-                  )
+              {[7, 8, 9].map((value) => (
+                <SelectItem key={value} value={value.toString()}>
+                  {value}
                 </SelectItem>
-              ))} */}
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -75,24 +82,28 @@ const InputForm = () => {
             id="lockCount"
             type="number"
             min="1"
-            value={""}
-            onChange={() => {}}
+            value={lockCount}
+            onChange={(e) => setLockCount(Number(e.target.value))}
           />
         </div>
 
-        <div className="flex items-center space-x-2 pt-2">
+        {/* <div className="flex items-center space-x-2 pt-2">
           <Checkbox
             id="compareMode"
-            checked={false}
-            onCheckedChange={() => {}}
+            checked={compareMode}
+            onCheckedChange={setCompareMode}
           />
           <Label htmlFor="compareMode">자물쇠 타입 비교 모드</Label>
-        </div>
+        </div> */}
 
         <div className="pt-4">
-          <Button onClick={() => {}} className="w-full">
-            <Calculator className="mr-2 h-4 w-4" />
-            계산하기
+          <Button
+            onClick={() => {
+              setChartData(lockCount, lockType, lockCount, Number(boosterType));
+            }}
+            className="w-full"
+          >
+            <Calculator className="mr-2 h-4 w-4" /> 계산하기
           </Button>
         </div>
       </CardContent>

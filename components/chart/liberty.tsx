@@ -10,7 +10,7 @@ const Liberty = () => {
 
   return (
     <ChartContainer className="w-100" config={chartConfig}>
-      <p>hello</p>
+      <p>해방의 열쇄 그래프</p>
     </ChartContainer>
   );
 };

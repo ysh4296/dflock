@@ -42,7 +42,8 @@ const Poisson = () => {
       <CardHeader>
         <CardTitle>아이템 획득량 예측</CardTitle>
         <CardDescription>
-          자물쇠 1000개를 사용했을 때 이달의 아이템 획득 개수별 확률 분포입니다.
+          자물쇠 1000개를 사용했을 때 이달의 아이템 획득 개수별 푸아송 분포로
+          나타낸 확률입니다.
         </CardDescription>
       </CardHeader>
       <ChartContainer config={chartConfig}>
@@ -56,10 +57,6 @@ const Poisson = () => {
         >
           <CartesianGrid vertical={false} />
           <XAxis dataKey="num" tickFormatter={(value) => value.slice(0, 3)} />
-          <XAxis
-            dataKey="probability"
-            tickFormatter={(value) => value.slice(0, 3)}
-          />
           <ChartTooltip
             cursor={false}
             content={<ChartTooltipContent indicator="dot" />}

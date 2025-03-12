@@ -1,11 +1,103 @@
 // src/worker/chartWorker.js
+"use client";
 
 import { calculateTotalGold, monteCarloSimulation } from "@/lib/calculator";
 import { goldData } from "@/mock/goldData";
 
-onmessage = function (e) {
+const lockType1 = (
+  e: MessageEvent<any>,
+  locks: number,
+  boostNumber: number
+): SimulationTrial[] => {
+  const { normalLock1, normalLock2, TRIES } = e.data;
+
+  const boosts = locks / boostNumber;
+  const normals = locks - boosts;
+
+  // normal
+  const data1 = monteCarloSimulation(normalLock1, TRIES, normals);
+  const data2 = monteCarloSimulation(normalLock2, TRIES, normals);
+  // boost
+  let data3 = monteCarloSimulation(normalLock1, TRIES, boosts);
+  let data4 = monteCarloSimulation(normalLock2, TRIES, boosts);
+
+  data3 = [...data3, ...data3];
+  data4 = [...data4, ...data4];
+
+  return [...data1, ...data2, ...data3, ...data4];
+};
+
+const lockType2 = (
+  e: MessageEvent<any>,
+  locks: number,
+  boostNumber: number
+): SimulationTrial[] => {
   const { normalLock1, normalLock2, mileageLock1, mileageLock2, TRIES } =
     e.data;
+
+  const boosts = locks / boostNumber;
+  const normals = locks - boosts;
+
+  // normal
+  const data1 = monteCarloSimulation(normalLock1, TRIES, normals);
+  const data2 = monteCarloSimulation(normalLock2, TRIES, normals);
+  // boost
+  let data3 = monteCarloSimulation(mileageLock1, TRIES, boosts);
+  let data4 = monteCarloSimulation(mileageLock2, TRIES, boosts);
+
+  data3 = [...data3, ...data3];
+  data4 = [...data4, ...data4];
+
+  return [...data1, ...data2, ...data3, ...data4];
+};
+
+const lockType3 = (
+  e: MessageEvent<any>,
+  locks: number,
+  boostNumber: number
+): SimulationTrial[] => {
+  const { mileageLock1, mileageLock2, TRIES } = e.data;
+
+  const boosts = locks / boostNumber;
+  const normals = locks - boosts;
+
+  // normal
+  const data1 = monteCarloSimulation(mileageLock1, TRIES, normals);
+  const data2 = monteCarloSimulation(mileageLock2, TRIES, normals);
+  // boost
+  let data3 = monteCarloSimulation(mileageLock1, TRIES, boosts);
+  let data4 = monteCarloSimulation(mileageLock2, TRIES, boosts);
+
+  data3 = [...data3, ...data3];
+  data4 = [...data4, ...data4];
+
+  return [...data1, ...data2, ...data3, ...data4];
+};
+
+onmessage = function (e) {
+  const {
+    normalLock1,
+    normalLock2,
+    mileageLock1,
+    mileageLock2,
+    lockType,
+    lockCount,
+    boosterType,
+    TRIES,
+  } = e.data;
+
+  let locks;
+
+  if (lockType === "normal") {
+    console.log(lockCount, boosterType);
+    locks = lockType1(e, lockCount, Number(boosterType));
+  } else if (lockType === "mileage") {
+    console.log(lockCount, boosterType);
+    locks = lockType2(e, lockCount, Number(boosterType));
+  } else {
+    console.log(lockCount, boosterType);
+    locks = lockType3(e, lockCount, Number(boosterType));
+  }
 
   // Web Worker에서 monteCarloSimulation을 병렬로 실행
   const data = monteCarloSimulation(normalLock1, TRIES, 1000);
