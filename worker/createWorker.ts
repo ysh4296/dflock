@@ -1,4 +1,3 @@
-// src/worker/chartWorker.js
 "use client";
 
 import { calculateTotalGold, monteCarloSimulation } from "@/lib/calculator";
@@ -75,37 +74,20 @@ const lockType3 = (
 };
 
 onmessage = function (e) {
-  const {
-    normalLock1,
-    normalLock2,
-    mileageLock1,
-    mileageLock2,
-    lockType,
-    lockCount,
-    boosterType,
-    TRIES,
-  } = e.data;
+  const { lockType, lockCount, boosterType } = e.data;
 
   let locks;
 
+  // Web Worker에서 monteCarloSimulation을 병렬로 실행
   if (lockType === "normal") {
-    console.log(lockCount, boosterType);
     locks = lockType1(e, lockCount, Number(boosterType));
   } else if (lockType === "mileage") {
-    console.log(lockCount, boosterType);
     locks = lockType2(e, lockCount, Number(boosterType));
   } else {
-    console.log(lockCount, boosterType);
     locks = lockType3(e, lockCount, Number(boosterType));
   }
 
-  // Web Worker에서 monteCarloSimulation을 병렬로 실행
-  const data = monteCarloSimulation(normalLock1, TRIES, 1000);
-  const data2 = monteCarloSimulation(normalLock2, TRIES, 18);
-  const data3 = monteCarloSimulation(mileageLock1, TRIES, 1000);
-  const data4 = monteCarloSimulation(mileageLock2, TRIES, 18);
-
-  const totalData = [...data, ...data2, ...data3, ...data4];
+  const totalData = [...locks];
 
   // 금액 계산
   const goldDatas = calculateTotalGold(totalData, goldData);

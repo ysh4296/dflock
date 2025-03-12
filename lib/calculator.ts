@@ -40,7 +40,7 @@ export function monteCarloSimulation(
 
     for (let j = 0; j < locks; j++) {
       // 자물쇠 개수만큼 시도
-      const rand = Math.log(1 / Math.random());
+      const rand = Math.random();
       let probabilitySum = 0;
       for (const item of lambdas) {
         if (probabilitySum > rand) {
