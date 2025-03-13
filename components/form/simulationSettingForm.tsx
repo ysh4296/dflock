@@ -34,7 +34,7 @@ const InputForm = () => {
   const { setChartData } = useGoldChartStore();
 
   return (
-    <Card className="h-fit">
+    <Card className="flex h-fit">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Settings className="h-5 w-5" /> 설정

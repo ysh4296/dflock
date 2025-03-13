@@ -11,6 +11,7 @@ import { normalLock1 } from "@/mock/itemData";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { poissonProbability } from "@/lib/calculator";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import ItemList from "../list/itemList";
 
 const TRIES = 1000;
 
@@ -38,40 +39,46 @@ const Poisson = () => {
   } satisfies ChartConfig;
 
   return (
-    <>
-      <CardHeader>
-        <CardTitle>아이템 획득량 예측</CardTitle>
-        <CardDescription>
-          자물쇠 1000개를 사용했을 때 이달의 아이템 획득 개수별 푸아송 분포로
-          나타낸 확률입니다.
-        </CardDescription>
-      </CardHeader>
-      <ChartContainer config={chartConfig}>
-        <AreaChart
-          accessibilityLayer
-          data={chartData}
-          margin={{
-            left: 12,
-            right: 12,
-          }}
-        >
-          <CartesianGrid vertical={false} />
-          <XAxis dataKey="num" tickFormatter={(value) => value.slice(0, 3)} />
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent indicator="dot" />}
-          />
-          <Area
-            dataKey="probability"
-            type="step"
-            fill="var(--color-lock)"
-            fillOpacity={0.4}
-            stroke="var(--color-lock)"
-            stackId="a"
-          />
-        </AreaChart>
-      </ChartContainer>
-    </>
+    <div
+      className="flex flex-row"
+      style={{ height: "calc(100% - 40px)", width: "100%" }}
+    >
+      <div className="flex flex-col w-full">
+        <CardHeader>
+          <CardTitle>아이템 획득량 예측</CardTitle>
+          <CardDescription>
+            자물쇠 사용에 따른 아이템 획득 개수를 푸아송 분포로 나타낸
+            확률입니다.
+          </CardDescription>
+        </CardHeader>
+        <ChartContainer config={chartConfig}>
+          <AreaChart
+            accessibilityLayer
+            data={chartData}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis dataKey="num" tickFormatter={(value) => value.slice(0, 3)} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="dot" />}
+            />
+            <Area
+              dataKey="probability"
+              type="step"
+              fill="var(--color-lock)"
+              fillOpacity={0.4}
+              stroke="var(--color-lock)"
+              stackId="a"
+            />
+          </AreaChart>
+        </ChartContainer>
+      </div>
+      <ItemList />
+    </div>
   );
 };
 

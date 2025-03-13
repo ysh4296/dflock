@@ -25,7 +25,7 @@ const ChartArea = () => {
   if (loading) return <Spinner size="medium" className="m-auto" />;
 
   return (
-    <ChartContainer config={chartConfig} className="h-fit">
+    <ChartContainer config={chartConfig}>
       <AreaChart data={chartData}>
         <XAxis
           dataKey="percentile"
@@ -39,7 +39,7 @@ const ChartArea = () => {
         <Area
           type="natural"
           dataKey="totalGold"
-          stroke="#8884d8"
+          //   stroke="#8884d8"
           fill="rgba(136, 132, 216, 0.5)"
         />
       </AreaChart>
