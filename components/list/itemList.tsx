@@ -36,7 +36,7 @@ const ItemList = () => {
     mileageLock2,
   );
 
-  const { setItem } = useItemSelectStore();
+  const { item: selectedItem, setItem } = useItemSelectStore();
 
   return (
     <Card className="p-0 flex grow w-fit">
@@ -52,7 +52,9 @@ const ItemList = () => {
             <TableRow
               key={item.name}
               onClick={() => setItem(item)}
-              className="cursor-pointer hover:bg-gray-100 transition"
+              className={`cursor-pointer hover:bg-gray-100 transition ${
+                selectedItem?.name === item.name ? "bg-gray-200" : ""
+              }`}
             >
               <TableCell>
                 <img

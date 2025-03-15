@@ -72,7 +72,7 @@ const Poisson = () => {
             확률입니다.
           </CardDescription>
         </CardHeader>
-        {item ? (
+        {item && lockCount ? (
           <ChartContainer
             config={chartConfig}
             className="justify-center items-center mt-16"
