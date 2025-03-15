@@ -40,10 +40,10 @@ const Poisson = () => {
 
   return (
     <div
-      className="flex flex-row"
-      style={{ height: "calc(100% - 40px)", width: "100%" }}
+      className="flex flex-row w-full"
+      style={{ height: "calc(100% - 40px)" }}
     >
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col h-full w-full">
         <CardHeader>
           <CardTitle>아이템 획득량 예측</CardTitle>
           <CardDescription>
@@ -51,7 +51,10 @@ const Poisson = () => {
             확률입니다.
           </CardDescription>
         </CardHeader>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer
+          config={chartConfig}
+          className="justify-center items-center mt-16"
+        >
           <AreaChart
             accessibilityLayer
             data={chartData}
@@ -59,6 +62,7 @@ const Poisson = () => {
               left: 12,
               right: 12,
             }}
+            height={72}
           >
             <CartesianGrid vertical={false} />
             <XAxis dataKey="num" tickFormatter={(value) => value.slice(0, 3)} />

@@ -12,21 +12,37 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+/**
+ * @todo xaxis overflow 해결하기
+ * @returns
+ */
 const ChartArea = () => {
   const { loading, chartData } = useGoldChartStore();
 
   if (loading === undefined)
     return (
-      <p className="leading-7 [&:not(:first-child)]:mt-6">
-        자물쇠의 종류와 개수를 설정하여 골드 획득량을 시뮬레이션 해보세요.
-      </p>
+      <div className="h-full w-full flex justify-center items-center">
+        <p className="leading-7 [&:not(:first-child)]:mt-6">
+          자물쇠의 종류와 개수를 설정하여 골드 획득량을 시뮬레이션 해보세요.
+        </p>
+      </div>
     );
 
-  if (loading) return <Spinner size="medium" className="m-auto" />;
+  if (loading)
+    return (
+      <div className="h-full w-full flex justify-center items-center">
+        <Spinner size="medium" className="m-auto" />
+      </div>
+    );
 
   return (
     <ChartContainer config={chartConfig}>
-      <AreaChart data={chartData}>
+      <AreaChart
+        data={chartData}
+        margin={{
+          bottom: 50,
+        }}
+      >
         <XAxis
           dataKey="percentile"
           tickFormatter={(tick) => `${tick}%`}
@@ -39,7 +55,7 @@ const ChartArea = () => {
         <Area
           type="natural"
           dataKey="totalGold"
-          //   stroke="#8884d8"
+          stroke="#8884d8"
           fill="rgba(136, 132, 216, 0.5)"
         />
       </AreaChart>

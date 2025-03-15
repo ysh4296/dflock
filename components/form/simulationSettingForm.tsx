@@ -81,13 +81,26 @@ const InputForm = () => {
           <Input
             id="lockCount"
             type="number"
-            min="1"
-            value={lockCount}
-            onChange={(e) => setLockCount(Number(e.target.value))}
+            value={lockCount ?? ""}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (value === "") {
+                setLockCount(undefined);
+              } else {
+                // 숫자로 변환 후 다시 문자열로 변환하여 불필요한 0 제거
+
+                const numValue = Number.parseInt(value, 10);
+                setLockCount(numValue);
+              }
+            }}
+            placeholder="개수를 입력해주세요."
           />
         </div>
 
-        {/* <div className="flex items-center space-x-2 pt-2">
+        {/*
+        @todo 추가 UI기능
+        <div className="flex items-center space-x-2 pt-2">
           <Checkbox
             id="compareMode"
             checked={compareMode}
@@ -95,11 +108,10 @@ const InputForm = () => {
           />
           <Label htmlFor="compareMode">자물쇠 타입 비교 모드</Label>
         </div> */}
-
         <div className="pt-4">
           <Button
             onClick={() => {
-              setChartData(lockCount, lockType, lockCount, Number(boosterType));
+              setChartData(1000, lockType, Number(boosterType), lockCount);
             }}
             className="w-full"
           >

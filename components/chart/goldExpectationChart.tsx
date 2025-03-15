@@ -3,7 +3,7 @@ import ChartArea from "./chartArea";
 
 const GoldExpectationChart = () => {
   return (
-    <div style={{ height: "calc(100% - 60px)" }}>
+    <div style={{ height: "calc(100% - 80px)" }}>
       <CardHeader>
         <CardTitle>골드 획득량 예측</CardTitle>
         <CardDescription className="text-wrap">

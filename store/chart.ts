@@ -17,8 +17,8 @@ interface goldChartState {
   setChartData: (
     tries: number,
     lockType: string,
-    lockCount: number,
     boosterType: number,
+    lockCount?: number,
   ) => void;
 }
 
@@ -28,8 +28,8 @@ export const useGoldChartStore = create<goldChartState>((set) => ({
   setChartData: (
     TRIES: number,
     lockType: string,
-    lockCount: number,
     boosterType: number,
+    lockCount?: number,
   ) => {
     set({ loading: true });
 

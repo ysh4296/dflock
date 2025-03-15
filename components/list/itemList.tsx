@@ -36,8 +36,8 @@ const ItemList = () => {
   );
 
   return (
-    <Card className="p-0">
-      <Table className="relative">
+    <Card className="p-0 flex grow  w-fit">
+      <Table className="relative w-fit">
         <TableHeader className="sticky top-0 bg-background z-10">
           <TableRow>
             <TableHead>이미지</TableHead>
