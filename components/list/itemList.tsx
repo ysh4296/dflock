@@ -1,26 +1,27 @@
 import {
-  mileageLock1,
-  mileageLock2,
-  normalLock1,
-  normalLock2,
-} from "@/mock/itemData";
-import { Card } from "../ui/card";
-import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
+} from "@/components/ui/table";
+import {
+  mileageLock1,
+  mileageLock2,
+  normalLock1,
+  normalLock2,
+} from "@/mock/itemData";
+import { useItemSelectStore } from "@/store/form";
+import { Card } from "../ui/card";
 
 const getUniqueItems = (...itemLists: Item[][]) => {
   const itemMap = new Map();
 
-  itemLists.flat().forEach(({ name }) => {
+  itemLists.flat().forEach(({ name, probability }) => {
     const key = `${name}`;
     if (!itemMap.has(key)) {
-      itemMap.set(key, { name });
+      itemMap.set(key, { name, probability });
     }
   });
 
@@ -35,8 +36,10 @@ const ItemList = () => {
     mileageLock2,
   );
 
+  const { setItem } = useItemSelectStore();
+
   return (
-    <Card className="p-0 flex grow  w-fit">
+    <Card className="p-0 flex grow w-fit">
       <Table className="relative w-fit">
         <TableHeader className="sticky top-0 bg-background z-10">
           <TableRow>
@@ -46,7 +49,11 @@ const ItemList = () => {
         </TableHeader>
         <TableBody>
           {uniqueItems.map((item) => (
-            <TableRow key={item.name}>
+            <TableRow
+              key={item.name}
+              onClick={() => setItem(item)}
+              className="cursor-pointer hover:bg-gray-100 transition"
+            >
               <TableCell>
                 <img
                   src={item.imageUrl}

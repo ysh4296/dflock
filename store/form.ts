@@ -21,3 +21,13 @@ export const useInputStore = create<InputState>((set) => ({
   setLockCount: (value) => set({ lockCount: value }),
   setCompareMode: (value) => set({ compareMode: value }),
 }));
+
+interface SelectState {
+  item?: Item;
+  setItem: (item: Item) => void;
+}
+
+export const useItemSelectStore = create<SelectState>((set) => ({
+  item: undefined,
+  setItem: (value) => set({ item: value }),
+}));
