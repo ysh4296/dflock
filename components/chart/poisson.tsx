@@ -17,6 +17,8 @@ import ItemList from "../list/itemList";
 /**
  * @todo
  * 실제 데이터 기반의 푸아송 차트 그리기
+ * 자물쇠 타입별 서로다른 확률적용하기
+ * 계산하기 버튼을 눌렀을때 계산하기
  */
 const Poisson = () => {
   const { lockCount } = useInputStore();
@@ -64,7 +66,7 @@ const Poisson = () => {
       className="flex flex-row w-full"
       style={{ height: "calc(100% - 40px)" }}
     >
-      <div className="flex flex-col h-full w-full">
+      <div className="flex flex-col h-full w-full justify-between">
         <CardHeader>
           <CardTitle>아이템 획득량 예측</CardTitle>
           <CardDescription>
@@ -75,7 +77,7 @@ const Poisson = () => {
         {item && lockCount ? (
           <ChartContainer
             config={chartConfig}
-            className="justify-center items-center mt-16"
+            className="justify-center items-end"
           >
             <AreaChart
               accessibilityLayer
