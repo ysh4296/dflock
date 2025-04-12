@@ -21,6 +21,10 @@ import { useGoldChartStore } from "@/store/chart";
 import { useInputStore } from "@/store/form";
 import { Calculator, Settings } from "lucide-react";
 
+/**
+ * @todo
+ * 계산하기 버튼 조건별 disabled설정
+ */
 const InputForm = () => {
   const {
     lockType,

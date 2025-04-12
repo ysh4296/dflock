@@ -36,13 +36,8 @@ const ChartArea = () => {
     );
 
   return (
-    <ChartContainer config={chartConfig}>
-      <AreaChart
-        data={chartData}
-        margin={{
-          bottom: 50,
-        }}
-      >
+    <ChartContainer config={chartConfig} className="h-full w-full">
+      <AreaChart data={chartData}>
         <XAxis
           dataKey="percentile"
           tickFormatter={(tick) => `${tick}%`}
