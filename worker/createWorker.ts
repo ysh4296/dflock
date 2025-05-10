@@ -3,6 +3,19 @@
 import { calculateTotalGold, monteCarloSimulation } from "@/lib/calculator";
 import { goldData } from "@/mock/goldData";
 
+/**
+ * @todo
+ * 현재 시뮬레이션이 실제 목적대로 진행되지 않음
+ * 추후 실질적로직으로 변환 필요.
+ */
+
+/**
+ * normal 자물쇠만을 이용해 아이템 생성
+ * @param e 웹 워커 이벤트
+ * @param locks 자물쇠 사용 횟수
+ * @param boostNumber 부스터 주기
+ * @returns 시뮬레이션 결과
+ */
 const lockType1 = (
   e: MessageEvent<any>,
   locks: number,
@@ -26,6 +39,13 @@ const lockType1 = (
   return [...data1, ...data2, ...data3, ...data4];
 };
 
+/**
+ * normal+milage 자물쇠를 이용해 아이템 생성
+ * @param e 웹 워커 이벤트
+ * @param locks 자물쇠 사용 횟수
+ * @param boostNumber 부스터 주기
+ * @returns 시뮬레이션 결과
+ */
 const lockType2 = (
   e: MessageEvent<any>,
   locks: number,
@@ -50,6 +70,13 @@ const lockType2 = (
   return [...data1, ...data2, ...data3, ...data4];
 };
 
+/**
+ * milage 자물쇠만을 이용해 아이템 생성
+ * @param e 웹 워커 이벤트
+ * @param locks 자물쇠 사용 횟수
+ * @param boostNumber 부스터 주기
+ * @returns 시뮬레이션 결과
+ */
 const lockType3 = (
   e: MessageEvent<any>,
   locks: number,
