@@ -1,8 +1,6 @@
-import GoldExpectationChart from "@/components/chart/goldExpectationChart";
-import Poisson from "@/components/chart/poisson";
 import SimulationSettingForm from "@/components/form/simulationSettingForm";
+import Tab from "@/components/tab/tab";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Lock } from "lucide-react";
 
 export default function Home() {
@@ -31,19 +29,9 @@ export default function Home() {
         {/* ⬇️ flex-grow와 min-h-0 추가 */}
         <main className="flex flex-row gap-4 grow min-h-0">
           <SimulationSettingForm />
+
           <Card className="flex w-full grow p-0 h-full">
-            <Tabs defaultValue="distribution" className="p-2 h-full w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="distribution">골드 획득량 예측</TabsTrigger>
-                <TabsTrigger value="items">아이템 확률</TabsTrigger>
-              </TabsList>
-              <TabsContent value="distribution" className="w-full h-full">
-                <GoldExpectationChart />
-              </TabsContent>
-              <TabsContent value="items" className="w-full h-full">
-                <Poisson />
-              </TabsContent>
-            </Tabs>
+            <Tab />
           </Card>
         </main>
         <footer />
