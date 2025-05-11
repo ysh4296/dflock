@@ -1,27 +1,19 @@
 "use client";
 
+import { useItemList, useItemMetadata } from "@/api/item/queryFn";
 import GoldExpectationChart from "@/components/chart/goldExpectationChart";
 import Poisson from "@/components/chart/poisson";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import axiosInstance from "@/utils/axios";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 
 const Tab = () => {
   /**
    * @todo
-   * improve fetcher & query
-   * ** add querykey factory
+   * modulate fetcher & query
+   * add queryKey factory
    */
-  const fetchItems = async () => {
-    const { data } = await axiosInstance.get("items");
-    return data;
-  };
-
-  const { data } = useSuspenseQuery({
-    queryKey: ["items"],
-    queryFn: fetchItems,
-  });
+  const { data: ItemList } = useItemList();
+  const { data: ItemMetadata } = useItemMetadata();
 
   return (
     <Tabs defaultValue="distribution" className="p-2 h-full w-full">
@@ -39,6 +31,10 @@ const Tab = () => {
   );
 };
 
+/**
+ * @todo
+ * more reasonable fallback ui
+ */
 const SuspenseTab = () => (
   <Suspense fallback={<div>Loading...</div>}>
     <Tab />

@@ -29,7 +29,6 @@ export default function Home() {
         {/* ⬇️ flex-grow와 min-h-0 추가 */}
         <main className="flex flex-row gap-4 grow min-h-0">
           <SimulationSettingForm />
-
           <Card className="flex w-full grow p-0 h-full">
             <Tab />
           </Card>
