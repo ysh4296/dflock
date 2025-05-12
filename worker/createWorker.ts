@@ -12,12 +12,12 @@ import { calculateTotalGold, monteCarloSimulation } from "@/lib/calculator";
 const lockType1 = (
   e: MessageEvent<any>,
   locks: number,
-  boostNumber: number
+  _boostNumber: number
 ): SimulationTrial[] => {
   const { normalLock1, normalLock2, TRIES } = e.data;
 
-  const boosts = locks / boostNumber;
-  const normals = locks - boosts;
+  const boosts = 0;
+  const normals = locks;
 
   // normal
   const data1 = monteCarloSimulation(normalLock1, TRIES, normals);
@@ -42,13 +42,13 @@ const lockType1 = (
 const lockType2 = (
   e: MessageEvent<any>,
   locks: number,
-  boostNumber: number
+  _boostNumber: number
 ): SimulationTrial[] => {
   const { normalLock1, normalLock2, mileageLock1, mileageLock2, TRIES } =
     e.data;
 
-  const boosts = locks / boostNumber;
-  const normals = locks - boosts;
+  const boosts = locks;
+  const normals = 0;
 
   // normal
   const data1 = monteCarloSimulation(normalLock1, TRIES, normals);
@@ -77,7 +77,7 @@ const lockType3 = (
 ): SimulationTrial[] => {
   const { mileageLock1, mileageLock2, TRIES } = e.data;
 
-  const boosts = locks / boostNumber;
+  const boosts = Math.floor(locks / boostNumber);
   const normals = locks - boosts;
 
   // normal
