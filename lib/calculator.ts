@@ -8,6 +8,24 @@ export function poissonProbability(lambda: number, k: number) {
   return (lambda ** k * Math.exp(-lambda)) / factorial(k);
 }
 
+/**
+ * @function 혼합형_푸아송_분포_계산기
+ * @param counts 시행횟수
+ * @param lambdas 기대값 리스트
+ * @param k 사건 발생 횟수
+ * @returns 혼합 푸아송 분포 확률
+ */
+export const mixedPoissonProbability = (
+  counts: number[],
+  lambdas: number[],
+  k: number,
+): number => {
+  const totalTrials = counts.reduce((acc, count) => acc + count, 0);
+  return counts.reduce((acc, count, i) => {
+    return acc + (count / totalTrials) * poissonProbability(lambdas[i], k);
+  }, 0);
+};
+
 function factorial(n: number) {
   if (n === 0) return 1;
   let result = 1;
@@ -62,7 +80,7 @@ export function calculateTotalGold(
     trial: number;
     acquiredItems: { name: string; count: number }[];
   }[],
-  goldData: Gold[],
+  itemMetadata: ItemMeta[],
 ): {
   totalGold: number;
   trial: number;
@@ -75,9 +93,9 @@ export function calculateTotalGold(
     let totalGold = 0;
 
     for (const item of result.acquiredItems) {
-      const goldItem = goldData.find((g) => g.name === item.name);
+      const goldItem = itemMetadata.find((g) => g.itemName === item.name);
       if (goldItem) {
-        totalGold += item.count * goldItem.gold;
+        totalGold += item.count * goldItem.unitPrice;
       }
     }
 

@@ -1,13 +1,6 @@
 "use client";
 
 import { calculateTotalGold, monteCarloSimulation } from "@/lib/calculator";
-import { goldData } from "@/mock/goldData";
-
-/**
- * @todo
- * 현재 시뮬레이션이 실제 목적대로 진행되지 않음
- * 추후 실질적로직으로 변환 필요.
- */
 
 /**
  * normal 자물쇠만을 이용해 아이템 생성
@@ -101,7 +94,7 @@ const lockType3 = (
 };
 
 onmessage = function (e) {
-  const { lockType, lockCount, boosterType } = e.data;
+  const { lockType, lockCount, boosterType, itemMetadata } = e.data;
 
   let locks;
 
@@ -115,9 +108,8 @@ onmessage = function (e) {
   }
 
   const totalData = [...locks];
-
   // 금액 계산
-  const goldDatas = calculateTotalGold(totalData, goldData);
+  const goldDatas = calculateTotalGold(totalData, itemMetadata);
 
   const frequencyMap: Record<number, number> = {};
   goldDatas.forEach(({ totalGold }) => {

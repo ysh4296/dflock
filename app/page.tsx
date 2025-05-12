@@ -1,5 +1,5 @@
 import SimulationSettingForm from "@/components/form/simulationSettingForm";
-import Tab from "@/components/tab/tab";
+import MainTab from "@/components/tab/mainTab";
 import { Card } from "@/components/ui/card";
 import { Lock } from "lucide-react";
 
@@ -30,7 +30,7 @@ export default function Home() {
         <main className="flex flex-row gap-4 grow min-h-0">
           <SimulationSettingForm />
           <Card className="flex w-full grow p-0 h-full">
-            <Tab />
+            <MainTab />
           </Card>
         </main>
         <footer />

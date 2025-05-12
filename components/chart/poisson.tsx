@@ -33,10 +33,7 @@ const Poisson = () => {
       let cumulativeProbability = 0;
 
       for (let i = 0; i <= 10; i++) {
-        let probability = poissonProbability(
-          (item.probability / 100) * lockCount,
-          i,
-        );
+        let probability = poissonProbability((10 / 100) * lockCount, i);
 
         if (i === 10) {
           probability = 1 - cumulativeProbability; // 10개 이상 획득할 확률

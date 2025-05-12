@@ -4,16 +4,23 @@ import { useItemList, useItemMetadata } from "@/api/item/queryFn";
 import GoldExpectationChart from "@/components/chart/goldExpectationChart";
 import Poisson from "@/components/chart/poisson";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Suspense } from "react";
+import { useItemStore } from "@/store/item";
+import { Suspense, useEffect } from "react";
 
-const Tab = () => {
+const MainTab = () => {
   /**
    * @todo
    * modulate fetcher & query
    * add queryKey factory
    */
+  const { setItemList, setItemMetadata } = useItemStore();
   const { data: ItemList } = useItemList();
   const { data: ItemMetadata } = useItemMetadata();
+
+  useEffect(() => {
+    setItemList(ItemList);
+    setItemMetadata(ItemMetadata);
+  }, [ItemList, ItemMetadata]);
 
   return (
     <Tabs defaultValue="distribution" className="p-2 h-full w-full">
@@ -35,10 +42,10 @@ const Tab = () => {
  * @todo
  * more reasonable fallback ui
  */
-const SuspenseTab = () => (
+const SuspenseMainTab = () => (
   <Suspense fallback={<div>Loading...</div>}>
-    <Tab />
+    <MainTab />
   </Suspense>
 );
 
-export default SuspenseTab;
+export default SuspenseMainTab;

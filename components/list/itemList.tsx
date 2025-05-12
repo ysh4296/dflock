@@ -6,35 +6,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  mileageLock1,
-  mileageLock2,
-  normalLock1,
-  normalLock2,
-} from "@/mock/itemData";
 import { useItemSelectStore } from "@/store/form";
+import { useItemStore } from "@/store/item";
 import { Card } from "../ui/card";
 
-const getUniqueItems = (...itemLists: Item[][]) => {
-  const itemMap = new Map();
-
-  itemLists.flat().forEach(({ name, probability }) => {
-    const key = `${name}`;
-    if (!itemMap.has(key)) {
-      itemMap.set(key, { name, probability });
-    }
-  });
-
-  return Array.from(itemMap.values());
-};
-
 const ItemList = () => {
-  const uniqueItems = getUniqueItems(
-    normalLock1,
-    normalLock2,
-    mileageLock1,
-    mileageLock2,
-  );
+  const { itemMetadata } = useItemStore();
 
   const { item: selectedItem, setItem } = useItemSelectStore();
 
@@ -48,22 +25,24 @@ const ItemList = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {uniqueItems.map((item) => (
+          {itemMetadata.map((itemMeta: ItemMeta) => (
             <TableRow
-              key={item.name}
-              onClick={() => setItem(item)}
+              key={itemMeta.itemName}
+              onClick={() => setItem(itemMeta)}
               className={`cursor-pointer hover:bg-gray-100 transition ${
-                selectedItem?.name === item.name ? "bg-gray-200" : ""
+                selectedItem?.itemName === itemMeta.itemName
+                  ? "bg-gray-200"
+                  : ""
               }`}
             >
               <TableCell>
                 <img
-                  src={item.imageUrl}
-                  alt={item.name}
+                  src={`https://img-api.neople.co.kr/df/items/${itemMeta.itemId}`}
+                  alt={itemMeta.itemName}
                   className="w-12 h-12 object-cover rounded"
                 />
               </TableCell>
-              <TableCell>{item.name}</TableCell>
+              <TableCell>{itemMeta.itemName}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useGoldChartStore } from "@/store/chart";
 import { useInputStore } from "@/store/form";
+import { useItemStore } from "@/store/item";
 import { Calculator, Settings } from "lucide-react";
 
 /**
@@ -26,6 +27,7 @@ import { Calculator, Settings } from "lucide-react";
  * 계산하기 버튼 조건별 disabled설정
  */
 const InputForm = () => {
+  const { itemList, itemMetadata } = useItemStore();
   const {
     lockType,
     boosterType,
@@ -115,7 +117,14 @@ const InputForm = () => {
         <div className="pt-4">
           <Button
             onClick={() => {
-              setChartData(1000, lockType, Number(boosterType), lockCount);
+              setChartData(
+                itemList,
+                itemMetadata,
+                1000,
+                lockType,
+                Number(boosterType),
+                lockCount,
+              );
             }}
             className="w-full"
           >
