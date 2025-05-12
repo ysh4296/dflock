@@ -23,11 +23,11 @@ export const useInputStore = create<InputState>((set) => ({
 }));
 
 interface SelectState {
-  item?: ItemMeta;
-  setItem: (item: ItemMeta) => void;
+  selectItem?: ItemMeta;
+  setSelectItem: (item: ItemMeta) => void;
 }
 
 export const useItemSelectStore = create<SelectState>((set) => ({
-  item: undefined,
-  setItem: (value) => set({ item: value }),
+  selectItem: undefined,
+  setSelectItem: (value) => set({ selectItem: value }),
 }));
