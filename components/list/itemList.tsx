@@ -13,7 +13,7 @@ import { Card } from "../ui/card";
 const ItemList = () => {
   const { itemMetadata } = useItemStore();
 
-  const { item: selectedItem, setItem } = useItemSelectStore();
+  const { selectItem, setSelectItem } = useItemSelectStore();
 
   return (
     <Card className="p-0 flex grow w-fit">
@@ -28,11 +28,9 @@ const ItemList = () => {
           {itemMetadata.map((itemMeta: ItemMeta) => (
             <TableRow
               key={itemMeta.itemName}
-              onClick={() => setItem(itemMeta)}
+              onClick={() => setSelectItem(itemMeta)}
               className={`cursor-pointer hover:bg-gray-100 transition ${
-                selectedItem?.itemName === itemMeta.itemName
-                  ? "bg-gray-200"
-                  : ""
+                selectItem?.itemName === itemMeta.itemName ? "bg-gray-200" : ""
               }`}
             >
               <TableCell>
