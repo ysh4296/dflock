@@ -9,22 +9,34 @@ export function poissonProbability(lambda: number, k: number) {
 }
 
 /**
- * @function 혼합형_푸아송_분포_계산기
- * @param counts 시행횟수
- * @param lambdas 기대값 리스트
- * @param k 사건 발생 횟수
- * @returns 혼합 푸아송 분포 확률
+ * @function n을_k개의_정수로_나누는_함수
+ * @param n 나눠지는 수의 총합
+ * @param k 나눌 집합 크기
+ * @returns 가능한 경우의수의 배열 [ ex) [[0,0,1][0,1,0][1,0,0]] ]
  */
-export const mixedPoissonProbability = (
-  counts: number[],
-  lambdas: number[],
-  k: number,
-): number => {
-  const totalTrials = counts.reduce((acc, count) => acc + count, 0);
-  return counts.reduce((acc, count, i) => {
-    return acc + (count / totalTrials) * poissonProbability(lambdas[i], k);
-  }, 0);
-};
+export function makePartition(n: number, k: number): number[][] {
+  const result: number[][] = [];
+
+  const findPartition = (sum: number, parts: number[], depth: number) => {
+    if (depth === k - 1) {
+      // 마지막 부분에 남은 값을 채워 넣음
+      parts.push(sum);
+      result.push([...parts]);
+      parts.pop();
+      return;
+    }
+
+    // 0부터 시작하여 가능한 모든 분할을 탐색
+    for (let i = 0; i <= sum; i++) {
+      parts.push(i);
+      findPartition(sum - i, parts, depth + 1);
+      parts.pop();
+    }
+  };
+
+  findPartition(n, [], 0);
+  return result;
+}
 
 function factorial(n: number) {
   if (n === 0) return 1;

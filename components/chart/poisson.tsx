@@ -8,8 +8,10 @@ import {
 } from "@/components/ui/chart";
 
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { poissonProbability } from "@/lib/calculator";
+import { makePartition, poissonProbability } from "@/lib/calculator";
 import { useInputStore, useItemSelectStore } from "@/store/form";
+import { useItemStore } from "@/store/item";
+import { getLockType } from "@/utils/getLockType";
 import { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import ItemList from "../list/itemList";
@@ -21,35 +23,82 @@ import ItemList from "../list/itemList";
  * 계산하기 버튼을 눌렀을때 계산하기
  */
 const Poisson = () => {
-  const { lockCount } = useInputStore();
+  const { lockType, lockCount, boosterType } = useInputStore();
 
   const [chartData, setChartData] = useState<any[] | undefined>(undefined);
 
-  const { item } = useItemSelectStore();
+  const { selectItem } = useItemSelectStore();
+
+  const { itemList } = useItemStore();
 
   useEffect(() => {
-    if (item !== undefined && lockCount !== undefined) {
+    if (selectItem !== undefined && lockCount !== undefined) {
       const data = [];
+      const { normalLocks, mileageLocks } = getLockType(
+        lockType,
+        lockCount,
+        Number(boosterType),
+      );
       let cumulativeProbability = 0;
 
       for (let i = 0; i <= 10; i++) {
-        let probability = poissonProbability((10 / 100) * lockCount, i);
+        const partition = makePartition(i, 4);
 
-        if (i === 10) {
-          probability = 1 - cumulativeProbability; // 10개 이상 획득할 확률
-        } else {
-          cumulativeProbability += probability; // 누적 확률 계산
+        let probabilitySum = 0;
+        const probability = [
+          (itemList.firstItems.find((i) => i.name === selectItem.itemName)
+            ?.probability ?? 0) / 100,
+          (itemList.secondItems.find((i) => i.name === selectItem.itemName)
+            ?.probability ?? 0) / 100,
+          (itemList.mileageFirstItems.find(
+            (i) => i.name === selectItem.itemName,
+          )?.probability ?? 0) / 100,
+          (itemList.mileageSecondItems.find(
+            (i) => i.name === selectItem.itemName,
+          )?.probability ?? 0) / 100,
+        ];
+        for (let j = 0; j < partition.length; j++) {
+          probabilitySum +=
+            Number(
+              poissonProbability(
+                probability[0] * normalLocks,
+                partition[j][0],
+              ).toFixed(3),
+            ) *
+            Number(
+              poissonProbability(
+                probability[1] * normalLocks,
+                partition[j][1],
+              ).toFixed(3),
+            ) *
+            Number(
+              poissonProbability(
+                probability[2] * mileageLocks,
+                partition[j][2],
+              ).toFixed(3),
+            ) *
+            Number(
+              poissonProbability(
+                probability[3] * mileageLocks,
+                partition[j][3],
+              ).toFixed(3),
+            );
         }
 
+        if (i === 10) {
+          probabilitySum = 1 - cumulativeProbability; // 10개 이상 획득할 확률
+        } else {
+          cumulativeProbability += probabilitySum; // 누적 확률 계산
+        }
         data.push({
           num: String(i),
-          probability,
+          probability: probabilitySum < 0 ? 0 : probabilitySum,
         });
       }
 
       setChartData(data);
     }
-  }, [item, lockCount]);
+  }, [selectItem, lockCount, lockType, boosterType]);
 
   const chartConfig = {
     probability: {
@@ -71,7 +120,7 @@ const Poisson = () => {
             확률입니다.
           </CardDescription>
         </CardHeader>
-        {item && lockCount ? (
+        {selectItem && lockCount ? (
           <ChartContainer
             config={chartConfig}
             className="justify-center items-end"
