@@ -46,38 +46,43 @@ function factorial(n: number) {
   }
   return result;
 }
-
 /**
- * @todo 분활된 확률의 몬테 카를로 시뮬레이터로 교체
  * @function 몬테_카를로_시뮬레이터
- * @param lambda 사건 발생 확률들
+ * @param lambdas 각 가챠의 아이템 확률 배열
  * @param trials 시뮬레이션 횟수
- * @param lock 사용한 자물쇠 개수
+ * @param locks 각 가챠의 시도 횟수 배열
  * @returns 시뮬레이션 결과
  */
 export function monteCarloSimulation(
-  lambdas: Item[],
+  lambdas: Item[][],
   trials: number,
-  locks: number,
+  locks: number[],
 ): SimulationTrial[] {
-  const results: {
-    trial: number;
-    acquiredItems: { name: string; count: number }[];
-  }[] = [];
+  const results: SimulationTrial[] = [];
 
   for (let i = 0; i < trials; i++) {
     const acquiredItems: { name: string; count: number }[] = [];
 
-    for (let j = 0; j < locks; j++) {
-      // 자물쇠 개수만큼 시도
-      const rand = Math.random();
-      let probabilitySum = 0;
-      for (const item of lambdas) {
-        if (probabilitySum > rand) {
-          acquiredItems.push({ name: item.name, count: 1 });
-          break;
+    for (let g = 0; g < lambdas.length; g++) {
+      const items = lambdas[g];
+      const lockCount = locks[g];
+      for (let j = 0; j < lockCount; j++) {
+        const rand = Math.random();
+        let probabilitySum = 0;
+        for (const item of items) {
+          probabilitySum += item.probability / 100;
+          if (probabilitySum > rand) {
+            const existingItem = acquiredItems.find(
+              (acq) => acq.name === item.name,
+            );
+            if (existingItem) {
+              existingItem.count++;
+            } else {
+              acquiredItems.push({ name: item.name, count: 1 });
+            }
+            break;
+          }
         }
-        probabilitySum += item.probability / 100;
       }
     }
 

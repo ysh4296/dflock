@@ -16,23 +16,18 @@ onmessage = function (e) {
     TRIES,
   } = e.data;
 
-  let locks;
-
   const { normalLocks, mileageLocks } = getLockType(
     lockType,
     lockCount,
     Number(boosterType)
   );
-  // normal
-  const data1 = monteCarloSimulation(normalLock1, TRIES, normalLocks);
-  const data2 = monteCarloSimulation(normalLock2, TRIES, normalLocks);
-  // boost
-  const data3 = monteCarloSimulation(mileageLock1, TRIES, mileageLocks);
-  const data4 = monteCarloSimulation(mileageLock2, TRIES, mileageLocks);
 
-  locks = [...data1, ...data2, ...data3, ...data4];
+  const totalData = monteCarloSimulation(
+    [normalLock1, normalLock2, mileageLock1, mileageLock2],
+    TRIES,
+    [normalLocks, normalLocks, mileageLocks, mileageLocks]
+  );
 
-  const totalData = [...locks];
   // 금액 계산
   const goldDataList = calculateTotalGold(totalData, itemMetadata);
 
