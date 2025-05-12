@@ -12,10 +12,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-/**
- * @todo xaxis overflow 해결하기
- * @returns
- */
 const ChartArea = () => {
   const { loading, chartData } = useGoldChartStore();
 
@@ -42,7 +38,6 @@ const ChartArea = () => {
           dataKey="percentile"
           tickFormatter={(tick) => `${tick}%`}
           tickMargin={10}
-          scale="linear"
           domain={[0, 100]}
           ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
         />

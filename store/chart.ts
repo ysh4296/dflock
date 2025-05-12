@@ -1,12 +1,5 @@
 import { create } from "zustand";
 
-import {
-  mileageLock1,
-  mileageLock2,
-  normalLock1,
-  normalLock2,
-} from "@/mock/itemData";
-
 /**
  * @todo
  * convert any to chart gold-percentage type
@@ -15,6 +8,8 @@ interface goldChartState {
   chartData: any[];
   loading?: boolean;
   setChartData: (
+    itemList: ItemListGetResponse,
+    itemMetadata: ItemMetadataGetResponse,
     tries: number,
     lockType: string,
     boosterType: number,
@@ -26,6 +21,8 @@ export const useGoldChartStore = create<goldChartState>((set) => ({
   chartData: [],
   loading: undefined,
   setChartData: (
+    itemList: ItemListGetResponse,
+    itemMetadata: ItemMetadataGetResponse,
     TRIES: number,
     lockType: string,
     boosterType: number,
@@ -42,10 +39,11 @@ export const useGoldChartStore = create<goldChartState>((set) => ({
 
     // Worker에 데이터 전달
     worker.postMessage({
-      normalLock1,
-      normalLock2,
-      mileageLock1,
-      mileageLock2,
+      normalLock1: itemList.firstItems,
+      normalLock2: itemList.secondItems,
+      mileageLock1: itemList.mileageFirstItems,
+      mileageLock2: itemList.mileageSecondItems,
+      itemMetadata,
       lockType,
       lockCount,
       boosterType,

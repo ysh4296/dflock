@@ -8,6 +8,36 @@ export function poissonProbability(lambda: number, k: number) {
   return (lambda ** k * Math.exp(-lambda)) / factorial(k);
 }
 
+/**
+ * @function n을_k개의_정수로_나누는_함수
+ * @param n 나눠지는 수의 총합
+ * @param k 나눌 집합 크기
+ * @returns 가능한 경우의수의 배열 [ ex) [[0,0,1][0,1,0][1,0,0]] ]
+ */
+export function makePartition(n: number, k: number): number[][] {
+  const result: number[][] = [];
+
+  const findPartition = (sum: number, parts: number[], depth: number) => {
+    if (depth === k - 1) {
+      // 마지막 부분에 남은 값을 채워 넣음
+      parts.push(sum);
+      result.push([...parts]);
+      parts.pop();
+      return;
+    }
+
+    // 0부터 시작하여 가능한 모든 분할을 탐색
+    for (let i = 0; i <= sum; i++) {
+      parts.push(i);
+      findPartition(sum - i, parts, depth + 1);
+      parts.pop();
+    }
+  };
+
+  findPartition(n, [], 0);
+  return result;
+}
+
 function factorial(n: number) {
   if (n === 0) return 1;
   let result = 1;
@@ -16,38 +46,43 @@ function factorial(n: number) {
   }
   return result;
 }
-
 /**
- * @todo 분활된 확률의 몬테 카를로 시뮬레이터로 교체
  * @function 몬테_카를로_시뮬레이터
- * @param lambda 사건 발생 확률들
+ * @param lambdas 각 가챠의 아이템 확률 배열
  * @param trials 시뮬레이션 횟수
- * @param lock 사용한 자물쇠 개수
+ * @param locks 각 가챠의 시도 횟수 배열
  * @returns 시뮬레이션 결과
  */
 export function monteCarloSimulation(
-  lambdas: Item[],
+  lambdas: Item[][],
   trials: number,
-  locks: number,
+  locks: number[],
 ): SimulationTrial[] {
-  const results: {
-    trial: number;
-    acquiredItems: { name: string; count: number }[];
-  }[] = [];
+  const results: SimulationTrial[] = [];
 
   for (let i = 0; i < trials; i++) {
     const acquiredItems: { name: string; count: number }[] = [];
 
-    for (let j = 0; j < locks; j++) {
-      // 자물쇠 개수만큼 시도
-      const rand = Math.random();
-      let probabilitySum = 0;
-      for (const item of lambdas) {
-        if (probabilitySum > rand) {
-          acquiredItems.push({ name: item.name, count: 1 });
-          break;
+    for (let g = 0; g < lambdas.length; g++) {
+      const items = lambdas[g];
+      const lockCount = locks[g];
+      for (let j = 0; j < lockCount; j++) {
+        const rand = Math.random();
+        let probabilitySum = 0;
+        for (const item of items) {
+          probabilitySum += item.probability / 100;
+          if (probabilitySum > rand) {
+            const existingItem = acquiredItems.find(
+              (acq) => acq.name === item.name,
+            );
+            if (existingItem) {
+              existingItem.count++;
+            } else {
+              acquiredItems.push({ name: item.name, count: 1 });
+            }
+            break;
+          }
         }
-        probabilitySum += item.probability / 100;
       }
     }
 
@@ -62,7 +97,7 @@ export function calculateTotalGold(
     trial: number;
     acquiredItems: { name: string; count: number }[];
   }[],
-  goldData: Gold[],
+  itemMetadata: ItemMeta[],
 ): {
   totalGold: number;
   trial: number;
@@ -75,9 +110,9 @@ export function calculateTotalGold(
     let totalGold = 0;
 
     for (const item of result.acquiredItems) {
-      const goldItem = goldData.find((g) => g.name === item.name);
+      const goldItem = itemMetadata.find((g) => g.itemName === item.name);
       if (goldItem) {
-        totalGold += item.count * goldItem.gold;
+        totalGold += item.count * goldItem.unitPrice;
       }
     }
 

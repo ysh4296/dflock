@@ -1,99 +1,38 @@
 "use client";
 
 import { calculateTotalGold, monteCarloSimulation } from "@/lib/calculator";
-import { goldData } from "@/mock/goldData";
-
-const lockType1 = (
-  e: MessageEvent<any>,
-  locks: number,
-  boostNumber: number
-): SimulationTrial[] => {
-  const { normalLock1, normalLock2, TRIES } = e.data;
-
-  const boosts = locks / boostNumber;
-  const normals = locks - boosts;
-
-  // normal
-  const data1 = monteCarloSimulation(normalLock1, TRIES, normals);
-  const data2 = monteCarloSimulation(normalLock2, TRIES, normals);
-  // boost
-  let data3 = monteCarloSimulation(normalLock1, TRIES, boosts);
-  let data4 = monteCarloSimulation(normalLock2, TRIES, boosts);
-
-  data3 = [...data3, ...data3];
-  data4 = [...data4, ...data4];
-
-  return [...data1, ...data2, ...data3, ...data4];
-};
-
-const lockType2 = (
-  e: MessageEvent<any>,
-  locks: number,
-  boostNumber: number
-): SimulationTrial[] => {
-  const { normalLock1, normalLock2, mileageLock1, mileageLock2, TRIES } =
-    e.data;
-
-  const boosts = locks / boostNumber;
-  const normals = locks - boosts;
-
-  // normal
-  const data1 = monteCarloSimulation(normalLock1, TRIES, normals);
-  const data2 = monteCarloSimulation(normalLock2, TRIES, normals);
-  // boost
-  let data3 = monteCarloSimulation(mileageLock1, TRIES, boosts);
-  let data4 = monteCarloSimulation(mileageLock2, TRIES, boosts);
-
-  data3 = [...data3, ...data3];
-  data4 = [...data4, ...data4];
-
-  return [...data1, ...data2, ...data3, ...data4];
-};
-
-const lockType3 = (
-  e: MessageEvent<any>,
-  locks: number,
-  boostNumber: number
-): SimulationTrial[] => {
-  const { mileageLock1, mileageLock2, TRIES } = e.data;
-
-  const boosts = locks / boostNumber;
-  const normals = locks - boosts;
-
-  // normal
-  const data1 = monteCarloSimulation(mileageLock1, TRIES, normals);
-  const data2 = monteCarloSimulation(mileageLock2, TRIES, normals);
-  // boost
-  let data3 = monteCarloSimulation(mileageLock1, TRIES, boosts);
-  let data4 = monteCarloSimulation(mileageLock2, TRIES, boosts);
-
-  data3 = [...data3, ...data3];
-  data4 = [...data4, ...data4];
-
-  return [...data1, ...data2, ...data3, ...data4];
-};
+import { getLockType } from "@/utils/getLockType";
 
 onmessage = function (e) {
-  const { lockType, lockCount, boosterType } = e.data;
+  const {
+    lockType,
+    lockCount,
+    boosterType,
+    itemMetadata,
+    normalLock1,
+    normalLock2,
+    mileageLock1,
+    mileageLock2,
+    TRIES,
+  } = e.data;
 
-  let locks;
+  const { normalLocks, mileageLocks } = getLockType(
+    lockType,
+    lockCount,
+    Number(boosterType)
+  );
 
-  // Web Worker에서 monteCarloSimulation을 병렬로 실행
-  if (lockType === "normal") {
-    locks = lockType1(e, lockCount, Number(boosterType));
-  } else if (lockType === "mileage") {
-    locks = lockType2(e, lockCount, Number(boosterType));
-  } else {
-    locks = lockType3(e, lockCount, Number(boosterType));
-  }
-
-  const totalData = [...locks];
+  const totalData = monteCarloSimulation(
+    [normalLock1, normalLock2, mileageLock1, mileageLock2],
+    TRIES,
+    [normalLocks, normalLocks, mileageLocks, mileageLocks]
+  );
 
   // 금액 계산
-  const goldDatas = calculateTotalGold(totalData, goldData);
+  const goldDataList = calculateTotalGold(totalData, itemMetadata);
 
   const frequencyMap: Record<number, number> = {};
-  goldDatas.forEach(({ totalGold }) => {
+  goldDataList.forEach(({ totalGold }) => {
     frequencyMap[totalGold] = (frequencyMap[totalGold] || 0) + 1;
   });
 
