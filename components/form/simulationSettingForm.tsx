@@ -20,6 +20,7 @@ import {
 import { useGoldChartStore } from "@/store/chart";
 import { useInputStore } from "@/store/form";
 import { useItemStore } from "@/store/item";
+import { AnimatePresence, motion } from "framer-motion";
 import { Calculator, Settings } from "lucide-react";
 
 /**
@@ -67,19 +68,36 @@ const InputForm = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="boosterType">부스터 상자 주기 (7-9)</Label>
-          <Select value={boosterType} onValueChange={setBoosterType}>
-            <SelectTrigger id="boosterType">
-              <SelectValue placeholder="부스터 효과 선택" />
-            </SelectTrigger>
-            <SelectContent>
-              {[7, 8, 9].map((value) => (
-                <SelectItem key={value} value={value.toString()}>
-                  {value}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <AnimatePresence>
+            {lockType === "booster_mileage" && (
+              <motion.div
+                key="booster-select"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="space-y-2 overflow-hidden"
+              >
+                <Label htmlFor="boosterType">부스터 상자 주기 (7-9)</Label>
+                <Select
+                  disabled={lockType !== "booster_mileage"}
+                  value={boosterType}
+                  onValueChange={setBoosterType}
+                >
+                  <SelectTrigger id="boosterType">
+                    <SelectValue placeholder="부스터 효과 선택" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[7, 8, 9].map((value) => (
+                      <SelectItem key={value} value={value.toString()}>
+                        {value}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div className="space-y-2">
