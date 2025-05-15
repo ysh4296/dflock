@@ -20,7 +20,7 @@ const ItemList = () => {
       <Table className="relative w-fit">
         <TableHeader className="sticky top-0 bg-background z-10">
           <TableRow>
-            <TableHead>이미지</TableHead>
+            {/* <TableHead>이미지</TableHead> */}
             <TableHead>아이템 이름</TableHead>
           </TableRow>
         </TableHeader>
@@ -33,13 +33,13 @@ const ItemList = () => {
                 selectItem?.itemName === itemMeta.itemName ? "bg-gray-200" : ""
               }`}
             >
-              <TableCell>
-                <img
+              {/* <TableCell> */}
+              {/* <img
                   src={`https://img-api.neople.co.kr/df/items/${itemMeta.itemId}`}
                   alt={itemMeta.itemName}
                   className="w-12 h-12 object-cover rounded"
-                />
-              </TableCell>
+                /> */}
+              {/* </TableCell> */}
               <TableCell>{itemMeta.itemName}</TableCell>
             </TableRow>
           ))}
