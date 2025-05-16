@@ -1,8 +1,8 @@
 "use client";
 
 import { useItemList, useItemMetadata } from "@/api/item/queryFn";
-import GoldExpectationChart from "@/components/chart/goldExpectationChart";
-import Poisson from "@/components/chart/poisson";
+import GoldExpectationChart from "@/components/chart/monteCarlo/goldExpectationChart";
+import Poisson from "@/components/chart/poisson/poisson";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type TabType, useInputStore } from "@/store/form";
 import { useItemStore } from "@/store/item";

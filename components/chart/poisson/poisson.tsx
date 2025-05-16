@@ -14,7 +14,7 @@ import { makePartition, poissonProbability } from "@/utils/calculator";
 import { getLockType } from "@/utils/getLockType";
 import { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import ItemList from "../list/itemList";
+import ItemList from "../../list/itemList";
 
 /**
  * @todo

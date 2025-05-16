@@ -3,8 +3,8 @@
 import { useGoldChartStore } from "@/store/chart";
 import { formatGold } from "@/utils/formatGlod";
 import { Area, AreaChart, Tooltip, XAxis } from "recharts";
-import { type ChartConfig, ChartContainer } from "../ui/chart";
-import { Spinner } from "../ui/spinner";
+import { type ChartConfig, ChartContainer } from "../../ui/chart";
+import { Spinner } from "../../ui/spinner";
 
 const chartConfig = {
   totalGold: {
