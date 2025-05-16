@@ -13,6 +13,22 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="p-4 bg-gradient-to-br from-white to-gray-100 shadow-2xl rounded-2xl border border-gray-200">
+        <div className="text-lg font-semibold text-gray-700">
+          상위 {(100 - Number(label)).toFixed(1)}%
+        </div>
+        <div className="text-xl font-bold text-blue-600">
+          {formatGold(Number(payload[0].value))} 골드
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
 const ChartArea = () => {
   const { loading, chartData } = useGoldChartStore();
 
@@ -44,10 +60,7 @@ const ChartArea = () => {
           domain={[0, 100]}
           ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
         />
-        <Tooltip
-          labelFormatter={(label) => `상위 ${Number(100 - label).toFixed(1)}%`}
-          formatter={(value) => [`${formatGold(Number(value))} 골드`]}
-        />
+        <Tooltip content={<CustomTooltip />} />
         <Area
           type="natural"
           dataKey="totalGold"

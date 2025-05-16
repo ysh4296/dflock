@@ -1,34 +1,52 @@
-"use client";
-
 import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-
-import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { useInputStore, useItemSelectStore } from "@/store/form";
 import { useItemStore } from "@/store/item";
 import { makePartition, poissonProbability } from "@/utils/calculator";
 import { getLockType } from "@/utils/getLockType";
 import { useEffect, useState } from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, Tooltip, XAxis } from "recharts";
 import ItemList from "../../list/itemList";
 
-/**
- * @todo
- * 실제 데이터 기반의 푸아송 차트 그리기
- * 자물쇠 타입별 서로다른 확률적용하기
- * 계산하기 버튼을 눌렀을때 계산하기
- */
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    const { probability, cumulativeProbability } = payload[0].payload;
+    return (
+      <Card className="p-4 bg-gradient-to-br from-white to-gray-100 shadow-2xl rounded-2xl border border-gray-200">
+        <CardContent className="flex flex-col gap-2">
+          <div className="flex items-center gap-2 text-gray-800">
+            <span className="text-lg font-semibold">
+              {label}개 {Number(label) === 10 && "이상"} 획득 확률:
+            </span>
+            <span className="text-xl font-bold text-blue-600">
+              {probability.toFixed(1)}%
+            </span>
+          </div>
+          <div className="flex items-center gap-2 text-gray-800">
+            <span className="text-lg font-semibold">
+              {label}개 이하 획득 확률:
+            </span>
+            <span className="text-xl font-bold text-green-600">
+              {cumulativeProbability.toFixed(1)}%
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+  return null;
+};
+
 const Poisson = () => {
   const { lockType, lockCount, boosterType } = useInputStore();
-
   const [chartData, setChartData] = useState<any[] | undefined>(undefined);
-
   const { selectItem } = useItemSelectStore();
-
   const { itemList } = useItemStore();
 
   useEffect(() => {
@@ -92,7 +110,8 @@ const Poisson = () => {
         }
         data.push({
           num: String(i),
-          probability: probabilitySum < 0 ? 0 : probabilitySum,
+          probability: probabilitySum < 0 ? 0 : probabilitySum * 100,
+          cumulativeProbability: cumulativeProbability * 100,
         });
       }
 
@@ -126,7 +145,6 @@ const Poisson = () => {
             className="justify-center items-end"
           >
             <AreaChart
-              accessibilityLayer
               data={chartData}
               margin={{
                 left: 12,
@@ -139,10 +157,7 @@ const Poisson = () => {
                 dataKey="num"
                 tickFormatter={(value) => value.slice(0, 3)}
               />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent indicator="dot" />}
-              />
+              <Tooltip content={<CustomTooltip />} />
               <Area
                 dataKey="probability"
                 type="step"
