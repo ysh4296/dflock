@@ -3,6 +3,7 @@
 import { useItemList, useItemMetadata } from "@/api/item/queryFn";
 import GoldExpectationChart from "@/components/chart/monteCarlo/goldExpectationChart";
 import Poisson from "@/components/chart/poisson/poisson";
+import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type TabType, useInputStore } from "@/store/form";
 import { useItemStore } from "@/store/item";
@@ -16,7 +17,7 @@ const MainTab = () => {
 
   useEffect(() => {
     setItemList(ItemList);
-    setItemMetadata(ItemMetadata);
+    setItemMetadata(ItemMetadata.sort((a, b) => b.unitPrice - a.unitPrice));
   }, [ItemList, ItemMetadata]);
 
   return (
@@ -39,12 +40,15 @@ const MainTab = () => {
   );
 };
 
-/**
- * @todo
- * more reasonable fallback ui
- */
 const SuspenseMainTab = () => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense
+    fallback={
+      <div className="flex flex-col items-center justify-center h-full w-full space-y-4">
+        <Spinner size="large" />
+        <p className="text-gray-500">데이터를 불러오는 중입니다...</p>
+      </div>
+    }
+  >
     <MainTab />
   </Suspense>
 );
