@@ -1,12 +1,19 @@
 export const formatGold = (value: number): string => {
-  if (value >= 1_0000_0000) {
-    return `${(value / 1_0000_0000).toFixed(0).replace(/\.00$/, "")}억`;
+  const units = [
+    { unit: "억", value: 1_0000_0000 },
+    { unit: "만", value: 1_0000 },
+  ];
+
+  let result = "";
+  let remaining = value;
+
+  for (const { unit, value: unitValue } of units) {
+    if (remaining >= unitValue) {
+      const count = Math.floor(remaining / unitValue);
+      result += `${count}${unit} `;
+      remaining %= unitValue;
+    }
   }
-  if (value >= 1_0000) {
-    return `${(value / 1_0000).toFixed(0).replace(/\.00$/, "")}만`;
-  }
-  if (value >= 1000) {
-    return `${(value / 1000).toFixed(0).replace(/\.00$/, "")}천`;
-  }
-  return value.toString();
+
+  return result.trim();
 };

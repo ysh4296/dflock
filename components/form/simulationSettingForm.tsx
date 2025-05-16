@@ -23,11 +23,8 @@ import { useItemStore } from "@/store/item";
 import { AnimatePresence, motion } from "framer-motion";
 import { Calculator, Settings } from "lucide-react";
 
-/**
- * @todo
- * 계산하기 버튼 조건별 disabled설정
- */
 const InputForm = () => {
+  const { tabType } = useInputStore();
   const { itemList, itemMetadata } = useItemStore();
   const {
     lockType,
@@ -53,7 +50,11 @@ const InputForm = () => {
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="lockType">자물쇠 타입</Label>
-          <Select value={lockType} onValueChange={setLockType}>
+          <Select
+            defaultValue="normal"
+            value={lockType}
+            onValueChange={setLockType}
+          >
             <SelectTrigger id="lockType">
               <SelectValue placeholder="자물쇠 타입 선택" />
             </SelectTrigger>
@@ -121,7 +122,6 @@ const InputForm = () => {
             placeholder="개수를 입력해주세요."
           />
         </div>
-
         {/*
         @todo 추가 UI기능
         <div className="flex items-center space-x-2 pt-2">
@@ -132,23 +132,34 @@ const InputForm = () => {
           />
           <Label htmlFor="compareMode">자물쇠 타입 비교 모드</Label>
         </div> */}
-        <div className="pt-4">
-          <Button
-            onClick={() => {
-              setChartData(
-                itemList,
-                itemMetadata,
-                1000,
-                lockType,
-                Number(boosterType),
-                lockCount,
-              );
-            }}
-            className="w-full"
-          >
-            <Calculator className="mr-2 h-4 w-4" /> 계산하기
-          </Button>
-        </div>
+        <AnimatePresence>
+          {tabType === "distribution" && (
+            <motion.div
+              key="booster-select"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="pt-4 space-y-2 overflow-hidden"
+            >
+              <Button
+                onClick={() => {
+                  setChartData(
+                    itemList,
+                    itemMetadata,
+                    1000,
+                    lockType,
+                    Number(boosterType),
+                    lockCount,
+                  );
+                }}
+                className="w-full"
+              >
+                <Calculator className="mr-2 h-4 w-4" /> 계산하기
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </CardContent>
     </Card>
   );

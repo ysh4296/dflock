@@ -4,16 +4,13 @@ import { useItemList, useItemMetadata } from "@/api/item/queryFn";
 import GoldExpectationChart from "@/components/chart/goldExpectationChart";
 import Poisson from "@/components/chart/poisson";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { type TabType, useInputStore } from "@/store/form";
 import { useItemStore } from "@/store/item";
 import { Suspense, useEffect } from "react";
 
 const MainTab = () => {
-  /**
-   * @todo
-   * modulate fetcher & query
-   * add queryKey factory
-   */
   const { setItemList, setItemMetadata } = useItemStore();
+  const { tabType, setTabType } = useInputStore();
   const { data: ItemList } = useItemList();
   const { data: ItemMetadata } = useItemMetadata();
 
@@ -23,7 +20,11 @@ const MainTab = () => {
   }, [ItemList, ItemMetadata]);
 
   return (
-    <Tabs defaultValue="distribution" className="p-2 h-full w-full">
+    <Tabs
+      className="p-2 h-full w-full"
+      value={tabType}
+      onValueChange={(value) => setTabType(value as TabType)}
+    >
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="distribution">골드 획득량 예측</TabsTrigger>
         <TabsTrigger value="items">아이템 확률</TabsTrigger>

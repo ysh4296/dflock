@@ -1,6 +1,6 @@
 "use client";
 
-import { calculateTotalGold, monteCarloSimulation } from "@/lib/calculator";
+import { calculateTotalGold, monteCarloSimulation } from "@/utils/calculator";
 import { getLockType } from "@/utils/getLockType";
 
 onmessage = function (e) {

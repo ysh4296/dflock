@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/chart";
 
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { makePartition, poissonProbability } from "@/lib/calculator";
 import { useInputStore, useItemSelectStore } from "@/store/form";
 import { useItemStore } from "@/store/item";
+import { makePartition, poissonProbability } from "@/utils/calculator";
 import { getLockType } from "@/utils/getLockType";
 import { useEffect, useState } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
