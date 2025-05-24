@@ -132,34 +132,37 @@ const InputForm = () => {
           />
           <Label htmlFor="compareMode">자물쇠 타입 비교 모드</Label>
         </div> */}
-        <AnimatePresence>
-          {tabType === "distribution" && (
-            <motion.div
-              key="booster-select"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="pt-4 space-y-2 overflow-hidden"
-            >
-              <Button
-                onClick={() => {
-                  setChartData(
-                    itemList,
-                    itemMetadata,
-                    1000,
-                    lockType,
-                    Number(boosterType),
-                    lockCount,
-                  );
-                }}
-                className="w-full"
+
+        <div className="space-y-2">
+          <AnimatePresence>
+            {tabType === "distribution" && (
+              <motion.div
+                key="booster-select"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="pt-4 overflow-hidden"
               >
-                <Calculator className="mr-2 h-4 w-4" /> 계산하기
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <Button
+                  onClick={() => {
+                    setChartData(
+                      itemList,
+                      itemMetadata,
+                      1000,
+                      lockType,
+                      Number(boosterType),
+                      lockCount,
+                    );
+                  }}
+                  className="w-full"
+                >
+                  <Calculator className="mr-2 h-4 w-4" /> 계산하기
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </CardContent>
     </Card>
   );
