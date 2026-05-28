@@ -5,9 +5,14 @@ import {
 } from "@tanstack/react-query";
 import { ItemQueryKey } from "./queryKey";
 
+const isMock = process.env.NEXT_PUBLIC_MOCK === "true";
+
 const fetchItemList = async (): Promise<ItemListGetResponse> => {
+  if (isMock) {
+    const { mockItemList } = await import("./mockData");
+    return mockItemList;
+  }
   if (typeof window === "undefined") {
-    // 서버 환경에서는 실행되지 않도록 처리
     return {
       firstItems: [],
       secondItems: [],
@@ -20,10 +25,11 @@ const fetchItemList = async (): Promise<ItemListGetResponse> => {
 };
 
 const fetchItemMetadata = async (): Promise<ItemMetadataGetResponse> => {
-  if (typeof window === "undefined") {
-    // 서버 환경에서는 실행되지 않도록 처리
-    return [];
+  if (isMock) {
+    const { mockItemMetadata } = await import("./mockData");
+    return mockItemMetadata;
   }
+  if (typeof window === "undefined") return [];
   const { data } = await axiosInstance.get("items/metadata");
   return data;
 };
